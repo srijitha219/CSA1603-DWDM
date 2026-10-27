@@ -1,0 +1,22 @@
+d <- read.csv(file.choose(), header = TRUE)
+head(d)
+names(d)
+d <- read.csv("diabetes.csv")
+head(d)
+
+# In this dataset, BloodPressure = 0 means missing, so remove those rows
+d <- d[d$BloodPressure > 0, ]
+
+# Scatter plot
+plot(d$Age, d$BloodPressure, pch = 19, col = "darkgreen",
+     xlab = "Age", ylab = "Blood Pressure",
+     main = "Blood Pressure vs Age")
+abline(lm(BloodPressure ~ Age, data = d), col = "red", lwd = 2)
+
+# Bar chart: average blood pressure per age group
+d$AgeGroup <- cut(d$Age, breaks = c(20, 30, 40, 50, 60, 100),
+                  labels = c("21-30","31-40","41-50","51-60","60+"))
+avg_bp <- tapply(d$BloodPressure, d$AgeGroup, mean)
+barplot(avg_bp, col = "steelblue",
+        xlab = "Age Group", ylab = "Mean Blood Pressure",
+        main = "Average Blood Pressure by Age Group")
